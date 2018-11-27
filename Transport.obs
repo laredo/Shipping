@@ -1,6 +1,6 @@
 asset contract Node {
-    state NodeNull {}
-    state NodeSome {
+    asset state NodeNull {}
+    asset state NodeSome {
         Transport@Shared node;
     }
 
@@ -13,7 +13,7 @@ asset contract Node {
     }
 
 
-    transaction getNode(Node@NodeSome this) returns Transport@Unowned
+    transaction getNode(Node@NodeSome this) returns Transport@Shared
     {
         return node;
     }
@@ -75,7 +75,16 @@ asset contract Transport {
         if (n == 0) {
             return new Node(this);
         }
-
+        // the following seems ok
+        switch next {
+            case NodeSome {
+                return next.getNode().nth(n - 1);
+            }
+            case NodeNull {
+                return new Node();
+            }
+        }
+        // but the compiler complains about the following /*
         Node ret;
         switch next {
             case NodeSome {
@@ -85,8 +94,8 @@ asset contract Transport {
                 ret = new Node();
             }
         }
+        return ret;*/
 
-        return ret;
     }
 
     transaction append(string name, string transportType, string originPort) {
