@@ -1,0 +1,72 @@
+import "/Users/laredo/obsidian/shipping/Transport.obs"
+main asset contract Shipment {
+   string id;
+   string seller;
+   string shipper;
+   string buyer;
+   string source;
+   string dest;
+   int load;
+   string description;
+   string plannedDate;
+   string releasedDate;
+   Node transportList;
+
+
+   state Contract {}
+   state Release {}
+   state InTransit  {}
+   state Delivered {}
+
+    Shipment@Owned(string pseller, string pshipper, string pbuyer, string psource, string pdest,
+    		 int pload, string pdescription, string pplannedDate) {
+
+       id = "1";  // How do I generate a unique Id? - can I call out libraries?
+       seller = pseller;
+       shipper = pshipper;
+       buyer = pbuyer;
+       seller = pseller;
+       source = psource;
+       dest = pdest;
+       load = pload;
+       description = pdescription;
+       plannedDate = pplannedDate;
+       transportList = new Node(); //empty list
+       ->Contract;
+    }
+
+    transaction Load (Shipment@Contract >> Release this, string transport, string pstartLoad) {
+            transportList = new Node(); // Null node
+       		releasedDate = pstartLoad;
+            ->Release;
+            //(
+       		//	releasedDate = pstartLoad;
+       		//)
+    }
+
+   contract Transport {
+   	  string transportName;
+   	  string departurePort;
+   	  string startLoadDate;
+   	  string endLoadDate;
+      string arrivalPort;
+      //Transport next;
+      // <list of legs>
+      transaction Load () {
+      }
+      transaction AtSea() { //create Leg
+      }
+      transaction Unload () {
+      }
+   }
+   
+   contract Leg {
+      int	 legID;
+      int	 seqNumber;
+   	  string departurePort;
+   	  string departureDate;
+   	  string arrivalDate;
+      string arrivalPort; 	  
+   }
+
+}

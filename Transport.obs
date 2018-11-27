@@ -1,0 +1,102 @@
+asset contract Node {
+    state NodeNull {}
+    state NodeSome {
+        Transport@Shared node;
+    }
+
+    Node@NodeSome(Transport@Shared node) {
+        ->NodeSome(node = node);
+    }
+
+    Node@NodeNull() {
+        ->NodeNull;
+    }
+
+
+    transaction getNode(Node@NodeSome this) returns Transport@Unowned
+    {
+        return node;
+    }
+
+    transaction getValue(string fieldName, Node@NodeSome this) returns string {
+        string ret;
+        if (fieldName == "name") {
+            ret = node.getName();
+        } else {
+            if (fieldName == "originPort") {
+                ret = node.getOriginPort();
+            } else {
+                if (fieldName == "transportType") {
+                    ret = node.getTransportType();
+                }
+            }
+        }
+        return ret;
+    }
+}
+
+
+asset contract Transport {
+    string name;
+    string transportType;
+    string originPort;
+    Node@Owned next;
+
+    Transport@Owned(string name, string transportType, string originPort, Node@Owned next) {
+        this.name = name;
+        this.transportType = transportType;
+        this.originPort = originPort;
+        this.next = next;
+    }
+
+    transaction getName(Transport this) returns string {
+        return this.name;
+    }
+
+    transaction getTransportType(Transport this) returns string {
+        return this.transportType;
+    }
+
+    transaction getOriginPort(Transport this) returns string {
+        return this.originPort;
+    }
+
+    transaction length(Transport@Unowned this) returns int {
+        int i = 1;
+        switch next {
+            case NodeSome {
+                i = i + next.getNode().length();
+            }
+        }
+        return i;
+    }
+
+    transaction nth(int n) returns Node@Unowned {
+        if (n == 0) {
+            return new Node(this);
+        }
+
+        Node ret;
+        switch next {
+            case NodeSome {
+                ret = next.getNode().nth(n - 1);
+            }
+            case NodeNull {
+                ret = new Node();
+            }
+        }
+
+        return ret;
+    }
+
+    transaction append(string name, string transportType, string originPort) {
+        switch next {
+            case NodeSome {
+                next.getNode().append(name, transportType, originPort);
+            }
+            case NodeNull {
+                next = new Node(new Transport(name, transportType, originPort, new Node()));
+            }
+        }
+    }
+}
