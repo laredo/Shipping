@@ -42,11 +42,11 @@ asset contract Transport {
     string originPort;
     Node@Owned next;
 
-    Transport@Owned(string name, string transportType, string originPort, Node@Owned next) {
+    Transport@Owned(string name, string transportType, string originPort) {
         this.name = name;
         this.transportType = transportType;
         this.originPort = originPort;
-        this.next = next;
+        this.next = new Node();
     }
 
     transaction getName(Transport this) returns string {
@@ -95,7 +95,7 @@ asset contract Transport {
                 next.getNode().append(name, transportType, originPort);
             }
             case NodeNull {
-                next = new Node(new Transport(name, transportType, originPort, new Node()));
+                next = new Node(new Transport(name, transportType, originPort));
             }
         }
     }

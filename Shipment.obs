@@ -1,5 +1,5 @@
-import "/Users/laredo/obsidian/shipping/Transport.obs"
-main asset contract Shipment {
+import "resources/Shipping/Transport.obs"
+main contract Shipment {
    string id;
    string seller;
    string shipper;
@@ -10,7 +10,7 @@ main asset contract Shipment {
    string description;
    string plannedDate;
    string releasedDate;
-   Node transportList;
+   Transport@Shared transportList;
 
 
    state Contract {}
@@ -31,12 +31,12 @@ main asset contract Shipment {
        load = pload;
        description = pdescription;
        plannedDate = pplannedDate;
-       transportList = new Node(); //empty list
+       // transportList = new Node(); //empty list
        ->Contract;
     }
 
     transaction Load (Shipment@Contract >> Release this, string transport, string pstartLoad) {
-            transportList = new Node(); // Null node
+            transportList = new Transport("", "", ""); // Null node
        		releasedDate = pstartLoad;
             ->Release;
             //(
@@ -50,7 +50,6 @@ main asset contract Shipment {
    	  string startLoadDate;
    	  string endLoadDate;
       string arrivalPort;
-      //Transport next;
       // <list of legs>
       transaction Load () {
       }
