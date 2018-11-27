@@ -1,4 +1,4 @@
-import "resources/Shipping/Transport.obs"
+import "/Users/laredo/obsidian/Shipping/Transport.obs"
 main contract Shipment {
    string id;
    string seller;
@@ -31,20 +31,19 @@ main contract Shipment {
        load = pload;
        description = pdescription;
        plannedDate = pplannedDate;
-       // transportList = new Node(); //empty list
        ->Contract;
     }
 
-    transaction Load (Shipment@Contract >> Release this, string transport, string pstartLoad) {
-            transportList = new Transport("", "", ""); // Null node
-       		releasedDate = pstartLoad;
+    transaction Load (Shipment@Contract >> Release this, string transportName, string transportType, string pstartLoad) {
+            transportList = new Transport(transportName, transportType, source);
+            releasedDate = pstartLoad;
             ->Release;
             //(
        		//	releasedDate = pstartLoad;
-       		//)
+       		//);
     }
 
-   contract Transport {
+   /*contract Transport {
    	  string transportName;
    	  string departurePort;
    	  string startLoadDate;
@@ -58,7 +57,8 @@ main contract Shipment {
       transaction Unload () {
       }
    }
-   
+   */
+
    contract Leg {
       int	 legID;
       int	 seqNumber;
