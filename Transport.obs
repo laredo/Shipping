@@ -84,8 +84,8 @@ asset contract Transport {
                 return new Node();
             }
         }
-        // but the compiler complains about the following /*
-        Node ret;
+        // but the compiler complains about the following
+        /* Node ret;
         switch next {
             case NodeSome {
                 ret = next.getNode().nth(n - 1);
