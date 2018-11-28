@@ -1,4 +1,4 @@
-import "/Users/laredo/obsidian/Shipping/Transport.obs"
+import "Shipping/Transport1.obs"
 main contract Shipment {
    string id;
    string seller;
@@ -10,7 +10,7 @@ main contract Shipment {
    string description;
    string plannedDate;
    string releasedDate;
-   Transport@Shared transportList;
+   Transport@Owned transportList;
 
 
    state Contract {}
@@ -35,7 +35,10 @@ main contract Shipment {
     }
 
     transaction Load (Shipment@Contract >> Release this, string transportName, string transportType, string pstartLoad) {
-            transportList = new Transport(transportName, transportType, source);
+            // transportList = new Transport(transportName, transportType, source);
+            transportList = new Transport();
+            transportList.append(transportName, transportType, source);
+
             releasedDate = pstartLoad;
             ->Release;
             //(

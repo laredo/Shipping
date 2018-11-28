@@ -1,0 +1,67 @@
+contract Transport {
+
+    state Empty;
+    asset state HasNext {
+        Transport@Owned next;
+    }
+    asset state NoNext;
+
+    string name;
+    string transportType;
+    string originPort;
+
+    Transport@Empty() {
+        ->Empty;
+    }
+
+    transaction getName(Transport@HasNext this) returns string {
+        return name;
+    }
+
+    transaction getTransportType(Transport@HasNext this) returns string {
+        return transportType;
+    }
+
+    transaction getOriginPort(Transport@HasNext this) returns string {
+        return originPort;
+    }
+
+    transaction append(Transport@Owned this, string aName, string aType, string aPort) {
+        switch this {
+            case HasNext {
+                next.append(aName, aType, aPort);
+            }
+            case Empty {
+                ->HasNext(name = aName, transportType = aType, originPort = aPort, next = new Transport());
+            }
+        }
+    }
+
+    transaction length(Transport@Owned this) returns int {
+        switch this {
+            case HasNext {
+                return 1 + next.length();
+            }
+            case Empty {
+                return 0;
+            }
+        }
+    }
+
+    transaction nth(Transport@Owned this, int n) returns Transport@Unowned {
+        if (n == 0) {
+            return this;
+        } else {
+            switch this {
+                case HasNext {
+                    return next.nth(n - 1);
+                }
+                case Empty {
+                    return this; // ideally, this should throw an exception
+                }
+            }
+        }
+    }
+
+
+}
