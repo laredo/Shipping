@@ -1,6 +1,29 @@
-import "Shipping/Transport1.obs"
-main contract Shipment {
-   string id;
+import "/Users/laredo/obsidian/Shipping/Transport1.obs"
+
+main contract ShippingDriver {
+
+   int totalShipments;
+   int nextID;
+
+   ShippingDriver() {
+      totalShipments = 0;
+      nextID = 0;
+   }
+
+   transaction CreateAgreement(string pseller, string pshipper, string pbuyer, string psource,
+                               string pdest, int pload, string pdescription, string pplannedDate) returns Shipment {
+
+        Shipment s = new Shipment(nextID, pseller, pshipper, pbuyer, psource, pdest, pload, pdescription, pplannedDate);
+        totalShipments = totalShipments + 1;
+        nextID = nextID + 1;
+        return s;
+
+   }
+
+}
+
+contract Shipment {
+   int id;
    string seller;
    string shipper;
    string buyer;
@@ -18,10 +41,10 @@ main contract Shipment {
    state InTransit  {}
    state Delivered {}
 
-    Shipment@Owned(string pseller, string pshipper, string pbuyer, string psource, string pdest,
+    Shipment@Contract(int nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
     		 int pload, string pdescription, string pplannedDate) {
 
-       id = "1";  // How do I generate a unique Id? - can I call out libraries?
+       id = nid;
        seller = pseller;
        shipper = pshipper;
        buyer = pbuyer;
@@ -39,11 +62,11 @@ main contract Shipment {
             transportList = new Transport();
             transportList.append(transportName, transportType, source);
 
-            releasedDate = pstartLoad;
-            ->Release;
-            //(
-       		//	releasedDate = pstartLoad;
-       		//);
+            //releasedDate = pstartLoad;
+            ->Release
+            (
+       			releasedDate = pstartLoad
+       		);
     }
 
    /*contract Transport {
