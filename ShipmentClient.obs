@@ -1,0 +1,26 @@
+import "/Users/laredo/obsidian/Shipping/Shipment.obs"
+
+main contract ShippingDriverClient {
+
+   transaction main(remote ShippingDriver@Shared sh) {
+
+   string pseller = "Dole";
+   string pshipper = "TruckMyShipment";
+   string pbuyer = "ShopRite";
+   string psource = "Castroville, California";
+   string pdest = "Bronx, New York";
+   string pdescription = "Strawberries and Artichokes";
+   string pplannedDate = "12/01/2018";
+   int pload = 50;
+
+   Shipment s = sh.CreateAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12012018");
+
+   //Shipment s = sh.CreateAgreement(pseller, pshipper, pbuyer, psource, pdest, pload, pdescription, pplannedDate);
+   string transportName = "Truck5000";
+   string transportType = "truck";
+   string pstartLoad = "12/01/2018";
+   //s.Load(transportName, transportType, pstartLoad);
+
+   }
+}
+
