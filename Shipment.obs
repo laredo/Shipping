@@ -23,23 +23,24 @@ main contract ShippingDriver {
 }
 
 contract Shipment {
-   int id;
-   string seller;
-   string shipper;
-   string buyer;
-   string source;
-   string dest;
-   int load;
-   string description;
-   string plannedDate;
-   string releasedDate;
-   Transport@Owned transportList;
+    int id;
+    string seller;
+    string shipper;
+    string buyer;
+    string source;
+    string dest;
+    int load;
+    string description;
+    string plannedDate;
+    string releasedDate;
+    TransportList@Owned transportList;
 
 
-   state Contract {}
-   state Release {}
-   state InTransit  {}
-   state Delivered {}
+    state Contract {}
+    state Release {}
+    state InTransit  {}
+    state Delivered {}
+
 
     Shipment@Contract(int nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
     		 int pload, string pdescription, string pplannedDate) {
@@ -54,19 +55,19 @@ contract Shipment {
        load = pload;
        description = pdescription;
        plannedDate = pplannedDate;
+       transportList = new TransportList();
        ->Contract;
     }
 
-    transaction Load (Shipment@Contract >> Release this, string transportName, string transportType, string pstartLoad) {
-            // transportList = new Transport(transportName, transportType, source);
-            transportList = new Transport();
-            transportList.append(transportName, transportType, source);
 
-            //releasedDate = pstartLoad;
-            ->Release
-            (
-       			releasedDate = pstartLoad
-       		);
+    transaction Load (Shipment@Contract >> Release this, string transportName, string transportType, string pstartLoad) {
+        Transport newTransport = new Transport(transportName, transportType, source);
+        transportList.append(newTransport);
+
+        ->Release
+        (
+       		releasedDate = pstartLoad
+       	);
     }
 
    /*contract Transport {
