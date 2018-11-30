@@ -1,4 +1,4 @@
-import "/Users/laredo/obsidian/Shipping/Transport1.obs"
+import "Shipping/Transport1.obs"
 
 main contract ShippingDriver {
 
@@ -11,7 +11,7 @@ main contract ShippingDriver {
    }
 
    transaction CreateAgreement(string pseller, string pshipper, string pbuyer, string psource,
-                               string pdest, int pload, string pdescription, string pplannedDate) returns Shipment {
+                               string pdest, int pload, string pdescription, string pplannedDate) returns Shipment@Contract {
 
         Shipment s = new Shipment(nextID, pseller, pshipper, pbuyer, psource, pdest, pload, pdescription, pplannedDate);
         totalShipments = totalShipments + 1;
