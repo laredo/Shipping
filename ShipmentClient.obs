@@ -1,4 +1,4 @@
-import "/Users/laredo/obsidian/Shipping/Shipment.obs"
+import "Shipping/Shipment.obs"
 
 main contract ShippingDriverClient {
 
@@ -13,13 +13,12 @@ main contract ShippingDriverClient {
    string pplannedDate = "12/01/2018";
    int pload = 50;
 
-   Shipment s = sh.CreateAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12012018");
+   Shipment s = sh.CreateAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12/01/2018");
 
-   //Shipment s = sh.CreateAgreement(pseller, pshipper, pbuyer, psource, pdest, pload, pdescription, pplannedDate);
    string transportName = "Truck5000";
    string transportType = "truck";
    string pstartLoad = "12/01/2018";
-   //s.Load(transportName, transportType, pstartLoad);
+   s.Load(transportName, transportType, pstartLoad);
 
    }
 }
