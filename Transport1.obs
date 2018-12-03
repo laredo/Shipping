@@ -1,3 +1,5 @@
+import "Shipping/Leg.obs"
+
 contract Transport {
 
     state Load;
@@ -7,11 +9,17 @@ contract Transport {
     string transportName;
     string transportType;
     string originPort;
+    string destinationPort;
+    LegList@Owned legList;
+    Leg@InTransit currentLeg; //MC: currentLeg is a convenience variable to point to the current leg of the journey,
+                              //  at some point it will go into Arrived state, compiler insists for @InTransit declaration
+                              //  but then gives me another error (in setArrival below) when it notices the Arrived state
 
     Transport@Load(string pTransportName, string pTransportType, string pOriginPort) {
         transportName = pTransportName;
         transportType = pTransportType;
         originPort = pOriginPort;
+        legList = new LegList();
         ->Load;
     }
 
@@ -30,6 +38,25 @@ contract Transport {
         return originPort;
     }
 
+    transaction getDestinationPort(Transport this) returns string {
+        return destinationPort;
+    }
+
+    transaction depart(Transport@Load >> InTransport this, string pdepartureDate, string port) {
+        Leg newLeg = new Leg(this, pdepartureDate, port);
+        legList.append(newLeg);
+        ->InTransport(currentLeg = newLeg);
+
+    }
+
+    transaction stopOver(Transport@InTransport this, string parrivalDate, string port) {
+        currentLeg.setArrival(parrivalDate, port);
+    }
+
+    transaction arrive(Transport@InTransport >> Unload this, string parrivalDate, string port) {
+        currentLeg.setArrival(parrivalDate, port);
+        ->Unload(destinationPort = port);
+    }
 }
 
 

@@ -1,0 +1,92 @@
+contract Leg {
+
+    state InTransit;
+    state Arrived;
+
+    string departureDate;
+    string arrivalDate;
+    string originPort;
+    string destinationPort;
+    Transport@Shared carrier;
+
+    Leg@InTransit(Transport@Shared t, string ddepartureDate, string doriginPort) {
+        ->InTransit(departureDate = ddepartureDate, originPort = doriginPort, carrier = t);
+    }
+
+    transaction getDepartureDate(Leg@Owned this) returns string {
+        return departureDate;
+    }
+
+    transaction getOriginPort(Leg@Owned this) returns string {
+        return originPort;
+    }
+
+    transaction getCarrier(Leg@Owned this) returns Transport@Shared {
+        return carrier;
+    }
+
+    transaction setArrival(Leg@InTransit >> Arrived this, string date, string port) {
+        ->Arrived(arrivalDate = date, destinationPort = port);
+    }
+}
+
+
+
+contract LegList {
+
+    state Empty;
+    asset state HasNext {
+        LegList@Owned next;
+    }
+    asset state NoNext;
+
+
+    Leg@Unowned value;
+
+
+    LegList@Empty() {
+        ->Empty;
+    }
+
+
+    transaction append(LegList@Owned this, Leg pLeg) {
+        switch this {
+            case HasNext {
+                next.append(pLeg);
+            }
+            case Empty {
+                ->HasNext(value = pLeg, next = new LegList());
+            }
+        }
+    }
+
+
+    transaction length(LegList@Owned this) returns int {
+        switch this {
+            case HasNext {
+                return 1 + next.length();
+            }
+            case Empty {
+                return 0;
+            }
+        }
+    }
+
+
+    transaction nth(LegList@Owned this, int n) returns Leg@Unowned {
+        if (n == 0) {
+            return value;
+        } else {
+            switch this {
+                case HasNext {
+                    return next.nth(n - 1);
+                }
+                case Empty {
+                    return value; // ideally, this should throw an exception
+                }
+            }
+        }
+    }
+
+}
+
