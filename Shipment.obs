@@ -66,7 +66,11 @@ contract Shipment {
 
         ->Release( releasedDate = pstartLoad);
     }
-
+    
+    transaction getReleasedDate(Shipment@Release this) returns string {
+        return releasedDate;
+    }
+    
    /*contract Transport {
    	  string transportName;
    	  string departurePort;
@@ -82,14 +86,5 @@ contract Shipment {
       }
    }
    */
-
-   contract Leg {
-      int	 legID;
-      int	 seqNumber;
-   	  string departurePort;
-   	  string departureDate;
-   	  string arrivalDate;
-      string arrivalPort; 	  
-   }
 
 }

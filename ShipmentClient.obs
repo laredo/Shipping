@@ -1,4 +1,5 @@
 import "Shipping/Shipment.obs"
+import "Obsidian Runtime/src/Runtime/edu/cmu/cs/obsidian/java-utilities/System.obs"
 
 main contract ShippingDriverClient {
 
@@ -13,13 +14,13 @@ main contract ShippingDriverClient {
    string pplannedDate = "12/01/2018";
    int pload = 50;
 
-   Shipment s = sh.CreateAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12/01/2018");
+   remote Shipment s = sh.CreateAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12/01/2018");
 
    string transportName = "Truck5000";
    string transportType = "truck";
    string pstartLoad = "12/01/2018";
-   //s.Load(transportName, transportType, pstartLoad);
-   sh.loadShipment(s.getID(), transportName, transportType, pstartLoad); // workaround
+   s.Load(transportName, transportType, pstartLoad);
+   System.println (s.getReleasedDate());
    }
 }
 
