@@ -25,6 +25,7 @@ contract Leg {
         return carrier;
     }
 
+
     transaction setArrival(Leg@InTransit >> Arrived this, string date, string port) {
         ->Arrived(arrivalDate = date, destinationPort = port);
     }
@@ -48,14 +49,18 @@ contract LegList {
         ->Empty;
     }
 
+    transaction arrived(LegList@Shared this, string date, string port) {
+        value.setArrival(date, port);
+    }
 
-    transaction append(LegList@Owned this, Leg pLeg) {
+    transaction append(LegList@Owned this, Leg pLeg) returns LegList@Shared {
         switch this {
             case HasNext {
-                next.append(pLeg);
+                return next.append(pLeg);
             }
             case Empty {
                 ->HasNext(value = pLeg, next = new LegList());
+                return next;
             }
         }
     }
