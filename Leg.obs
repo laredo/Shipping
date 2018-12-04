@@ -42,7 +42,7 @@ contract LegList {
     asset state NoNext;
 
 
-    Leg@Unowned value;
+    Leg@Owned value;
 
 
     LegList@Empty() {
