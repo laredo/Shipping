@@ -1,29 +1,39 @@
 import "Shipping/Transport1.obs"
+import "Obsidian Runtime/src/Runtime/edu/cmu/cs/obsidian/java-utilities/System.obs"
+
 
 main contract ShippingDriver {
 
-   int totalShipments;
-   int nextID;
+    int totalShipments;
+    string nextID;
 
-   ShippingDriver() {
-      totalShipments = 0;
-      nextID = 0;
-   }
+    ShippingDriver() {
+        totalShipments = 0;
+        nextID = "1";
+    }
 
-   transaction CreateAgreement(string pseller, string pshipper, string pbuyer, string psource,
+
+    transaction createAgreement(string pseller, string pshipper, string pbuyer, string psource,
                                string pdest, int pload, string pdescription, string pplannedDate) returns Shipment@Contract {
 
         Shipment s = new Shipment(nextID, pseller, pshipper, pbuyer, psource, pdest, pload, pdescription, pplannedDate);
         totalShipments = totalShipments + 1;
-        nextID = nextID + 1;
+        if (nextID == "1") {
+            nextID = "2";
+        } else {
+            nextID = "3";
+        }
+
+        string id = s.getID();
+        System.println("created agreement with id: ");
+        System.println(id);
         return s;
-
-   }
-
+    }
 }
 
+
 contract Shipment {
-    int id;
+    string id;
     string seller;
     string shipper;
     string buyer;
@@ -42,7 +52,7 @@ contract Shipment {
     state Delivered {}
 
 
-    Shipment@Contract(int nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
+    Shipment@Contract(string nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
     		 int pload, string pdescription, string pplannedDate) {
 
        id = nid;
@@ -63,33 +73,25 @@ contract Shipment {
     transaction Load (Shipment@Contract >> Release this, string transportName, string transportType, string pstartLoad) {
         Transport newTransport = new Transport(transportName, transportType, source);
         transportList.append(newTransport);
-
-        ->Release( releasedDate = pstartLoad);
+        releasedDate = pstartLoad;
+        ->Release;
+        System.println("Released shipment with id: ");
+        System.println(id);
     }
 
-   /*contract Transport {
-   	  string transportName;
-   	  string departurePort;
-   	  string startLoadDate;
-   	  string endLoadDate;
-      string arrivalPort;
-      // <list of legs>
-      transaction Load () {
-      }
-      transaction AtSea() { //create Leg
-      }
-      transaction Unload () {
-      }
-   }
-   */
 
-   contract Leg {
-      int	 legID;
-      int	 seqNumber;
-   	  string departurePort;
-   	  string departureDate;
-   	  string arrivalDate;
-      string arrivalPort; 	  
-   }
+/*
+    transaction SetSail (Shipment@Release >> InTransit this, string transportName, string transportType, string pstartLoad) {
+         transportList.get
+    }
+*/
+
+
+    transaction getID(Shipment this) returns string {
+        return id;
+    }
+
+
+
 
 }

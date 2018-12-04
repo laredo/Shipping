@@ -4,22 +4,9 @@ main contract ShippingDriverClient {
 
    transaction main(remote ShippingDriver@Shared sh) {
 
-   string pseller = "Dole";
-   string pshipper = "TruckMyShipment";
-   string pbuyer = "ShopRite";
-   string psource = "Castroville, California";
-   string pdest = "Bronx, New York";
-   string pdescription = "Strawberries and Artichokes";
-   string pplannedDate = "12/01/2018";
-   int pload = 50;
+        remote Shipment s = sh.createAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12/01/2018");
+        s.Load("Truck5000", "truck", "12/01/2018");
 
-   Shipment s = sh.CreateAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12/01/2018");
-
-   string transportName = "Truck5000";
-   string transportType = "truck";
-   string pstartLoad = "12/01/2018";
-   //s.Load(transportName, transportType, pstartLoad);
-   sh.loadShipment(s.getID(), transportName, transportType, pstartLoad); // workaround
    }
 }
 

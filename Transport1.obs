@@ -7,17 +7,15 @@ contract Transport {
         Leg@InTransit currentLeg;
     }
     state Docked;
-    state Unload {
-    }
+    state Unload;
+
 
     string transportName;
     string transportType;
     string originPort;
     string destinationPort;
     LegList@Owned legList;
-    //Leg@InTransit currentLeg;//MC: currentLeg is a convenience variable to point to the current leg of the journey,
-                              //  at some point it will go into Arrived state, compiler insists for @InTransit declaration
-                              //  but then gives me another error (in setArrival below) when it notices the Arrived state
+
 
     Transport@Load(string pTransportName, string pTransportType, string pOriginPort) {
         transportName = pTransportName;
@@ -124,6 +122,9 @@ contract TransportList {
             }
         }
     }
+
+
+
 
 }
 
