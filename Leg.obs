@@ -7,9 +7,9 @@ contract Leg {
     string arrivalDate;
     string originPort;
     string destinationPort;
-    Transport@Shared carrier;
+    Transport@Unowned carrier;
 
-    Leg@InTransit(Transport@Shared t, string ddepartureDate, string doriginPort) {
+    Leg@InTransit(Transport@Unowned t, string ddepartureDate, string doriginPort) {
         ->InTransit(departureDate = ddepartureDate, originPort = doriginPort, carrier = t);
     }
 
@@ -21,7 +21,7 @@ contract Leg {
         return originPort;
     }
 
-    transaction getCarrier(Leg@Owned this) returns Transport@Shared {
+    transaction getCarrier(Leg@Owned this) returns Transport@Unowned {
         return carrier;
     }
 
@@ -42,18 +42,15 @@ contract LegList {
     asset state NoNext;
 
 
-    Leg@Owned value;
+    Leg@Arrived value;
 
 
     LegList@Empty() {
         ->Empty;
     }
 
-    transaction arrived(LegList@Shared this, string date, string port) {
-        value.setArrival(date, port);
-    }
 
-    transaction append(LegList@Owned this, Leg pLeg) returns LegList@Shared {
+    transaction append(LegList@Owned this, Leg@Arrived >> Unowned pLeg) returns LegList@Shared {
         switch this {
             case HasNext {
                 return next.append(pLeg);

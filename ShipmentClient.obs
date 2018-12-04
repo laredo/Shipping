@@ -18,8 +18,8 @@ main contract ShippingDriverClient {
    string transportName = "Truck5000";
    string transportType = "truck";
    string pstartLoad = "12/01/2018";
-   s.Load(transportName, transportType, pstartLoad);
-
+   //s.Load(transportName, transportType, pstartLoad);
+   sh.loadShipment(s.getID(), transportName, transportType, pstartLoad); // workaround
    }
 }
 

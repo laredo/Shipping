@@ -4,8 +4,9 @@ contract Transport {
 
     state Load;
     state InTransport {
-    //    Leg@Shared currentLeg;
+        Leg@InTransit currentLeg;
     }
+    state Docked;
     state Unload {
     }
 
@@ -14,7 +15,6 @@ contract Transport {
     string originPort;
     string destinationPort;
     LegList@Owned legList;
-    LegList@Shared cLeg;
     //Leg@InTransit currentLeg;//MC: currentLeg is a convenience variable to point to the current leg of the journey,
                               //  at some point it will go into Arrived state, compiler insists for @InTransit declaration
                               //  but then gives me another error (in setArrival below) when it notices the Arrived state
@@ -48,25 +48,21 @@ contract Transport {
 
     transaction depart(Transport@Load >> InTransport this, string pdepartureDate, string port) {
         Leg newLeg = new Leg(this, pdepartureDate, port);
-        cLeg = legList.append(newLeg);
-        ->InTransport;
+        [newLeg @ InTransit];
 
+        ->InTransport(currentLeg = newLeg);
     }
 
-    /*transaction stopOver(Transport@InTransport this, string parrivalDate, string port) {
+    transaction stopOver(Transport@InTransport >> Docked this, string parrivalDate, string port) {
         currentLeg.setArrival(parrivalDate, port);
-    }*/
-
-    transaction stopOver(Transport@InTransport this, string parrivalDate, string port) {
-        cLeg.arrived(parrivalDate, port);
+        [currentLeg @ Arrived];
+        legList.append(currentLeg);
+        [currentLeg @ Unowned];
+        ->Docked;
     }
 
-    /*transaction arrive(Transport@InTransport >> Unload this, string parrivalDate, string port) {
-        currentLeg.setArrival(parrivalDate, port);
-        ->Unload(destinationPort = port);
-    }*/
     transaction arrive(Transport@InTransport >> Unload this, string parrivalDate, string port) {
-        cLeg.arrived(parrivalDate, port);
+        stopOver(parrivalDate, port);
         ->Unload(destinationPort = port);
     }
 }
