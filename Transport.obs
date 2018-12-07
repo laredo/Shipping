@@ -49,7 +49,7 @@ contract Transport {
         [newLeg @ InTransit];
         ->InTransport(currentLeg = newLeg);
 
-        System.print("  |- ");
+        System.print("* ");
         System.print(pdepartureDate);
         System.print(" - transport leg INTRANSPORT. port [");
         System.print(port);
@@ -63,7 +63,7 @@ contract Transport {
         [currentLeg @ Unowned];
         ->Docked;
 
-        System.print("  |- ");
+        System.print("* ");
         System.print(parrivalDate);
         System.print(" - transport leg DOCKED. port [");
         System.print(port);
@@ -75,7 +75,7 @@ contract Transport {
         Leg newLeg = new Leg(this, date, port);
         ->InTransport(currentLeg = newLeg);
 
-        System.print("  |- ");
+        System.print("* ");
         System.print(date);
         System.print(" - transport leg INTRANSPORT after layover. port [");
         System.print(port);
@@ -87,7 +87,7 @@ contract Transport {
         stopOver(date, port);
         ->Unload(destinationPort = port);
 
-        System.print("  |- ");
+        System.print("* ");
         System.print(date);
         System.print(" - transport leg UNLOADED. port [");
         System.print(port);
