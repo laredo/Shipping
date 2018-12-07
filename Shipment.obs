@@ -1,5 +1,6 @@
-import "Shipping/Transport1.obs"
 import "Obsidian Runtime/src/Runtime/edu/cmu/cs/obsidian/java-utilities/System.obs"
+import "Shipping/Transport.obs"
+
 
 
 main contract ShippingDriver {
@@ -43,55 +44,135 @@ contract Shipment {
     string description;
     string plannedDate;
     string releasedDate;
+
     TransportList@Owned transportList;
 
+    Transport@InTransport ptr;
 
-    state Contract {}
-    state Release {}
-    state InTransit  {}
-    state Delivered {}
+    state Contract;
+    state Release {
+        Transport@Load loadTsp;
+    };
+    state InTransit {
+        Transport@InTransport inTsp;
+    };
+    state Docked {
+        Transport@Docked dockTsp;
+    };
+    state Delivered;
 
 
     Shipment@Contract(string nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
     		 int pload, string pdescription, string pplannedDate) {
+        id = nid;
+        seller = pseller;
+        shipper = pshipper;
+        buyer = pbuyer;
+        seller = pseller;
+        source = psource;
+        dest = pdest;
+        load = pload;
+        description = pdescription;
+        plannedDate = pplannedDate;
+        transportList = new TransportList();
+        ->Contract;
 
-       id = nid;
-       seller = pseller;
-       shipper = pshipper;
-       buyer = pbuyer;
-       seller = pseller;
-       source = psource;
-       dest = pdest;
-       load = pload;
-       description = pdescription;
-       plannedDate = pplannedDate;
-       transportList = new TransportList();
-       ->Contract;
+        System.print("* ");
+        System.print(pplannedDate);
+        System.print(" - shipment [");
+        System.print(id);
+        System.print("] CONTRACTED, seller [");
+        System.print(seller);
+        System.print("]. seller [");
+        System.print(seller);
+        System.print("]. buyer [");
+        System.print(buyer);
+        System.print("], shipper [");
+        System.print(shipper);
+        System.print("], src port [");
+        System.print(source);
+        System.print("], dest port [");
+        System.print(dest);
+        System.print("], shipment description [");
+        System.print(description);
+        System.println("]");
     }
 
 
-    transaction Load (Shipment@Contract >> Release this, string transportName, string transportType, string pstartLoad) {
+    transaction load(Shipment@Contract >> Release this, string transportName, string transportType, string pstartLoad) {
         Transport newTransport = new Transport(transportName, transportType, source);
-        transportList.append(newTransport);
         releasedDate = pstartLoad;
-        ->Release;
-        System.println("Released shipment with id: ");
-        System.println(id);
+        ->Release(loadTsp = newTransport);
+
+        System.print("* ");
+        System.print(pstartLoad);
+        System.print(" - shipment [");
+        System.print(id);
+        System.print("] RELEASED on [");
+        System.print(transportName);
+        System.print("], transport type [");
+        System.print(transportName);
+        System.println("]");
     }
 
 
-/*
-    transaction SetSail (Shipment@Release >> InTransit this, string transportName, string transportType, string pstartLoad) {
-         transportList.get
+    transaction setSail(Shipment@Release >> InTransit this, string date, string port) {
+        loadTsp.depart(date, port);
+        ->InTransit(inTsp = loadTsp);
+
+        System.print("* ");
+        System.print(date);
+        System.print(" - shipment [");
+        System.print(id);
+        System.print("] INTRANSIT from port [");
+        System.print(port);
+        System.println("]");
     }
-*/
+
+
+    transaction setDock(Shipment@InTransit >> Docked this, string date, string port) {
+        inTsp.stopOver(date, port);
+        ->Docked(dockTsp = inTsp);
+
+        System.print("* ");
+        System.print(date);
+        System.print(" - shipment [");
+        System.print(id);
+        System.print("] DOCKED at port [");
+        System.print(port);
+        System.println("]");
+    }
+
+    transaction setUndock(Shipment@Docked >> InTransit this, string date, string port) {
+        dockTsp.layoverDepart(date, port);
+        ->InTransit(inTsp = dockTsp);
+
+        System.print("* ");
+        System.print(date);
+        System.print(" - shipment [");
+        System.print(id);
+        System.print("] INTRANSIT after a layover at port [");
+        System.print(port);
+        System.println("]");
+    }
+
+    transaction setDeliver(Shipment@InTransit >> Delivered this, string date, string port) {
+        inTsp.arrive(date, port);
+        transportList.append(inTsp);
+        ->Delivered;
+
+        System.print("* ");
+        System.print(date);
+        System.print(" - shipment [");
+        System.print(id);
+        System.print("] DELIVERED at port [");
+        System.print(port);
+        System.println("]");
+    }
 
 
     transaction getID(Shipment this) returns string {
         return id;
     }
-
-
-
 
 }

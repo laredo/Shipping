@@ -50,14 +50,13 @@ contract LegList {
     }
 
 
-    transaction append(LegList@Owned this, Leg@Arrived >> Unowned pLeg) returns LegList@Shared {
+    transaction append(LegList@Owned this, Leg@Arrived >> Unowned pLeg) {
         switch this {
             case HasNext {
-                return next.append(pLeg);
+                next.append(pLeg);
             }
             case Empty {
                 ->HasNext(value = pLeg, next = new LegList());
-                return next;
             }
         }
     }
