@@ -1,25 +1,22 @@
 $ java -jar ShippingDriver.jar abcd 12345
-
 Listening on port 12345...
 Accepted connection...
-
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["RG9sZQ==","VHJ1Y2tNeVNoaXBtZW50","U2hvcFJpdGU=","Q2FzdHJvdmlsbGUsIENhbGlmb3JuaWE=","QnJvbngsIE5ldyBZb3Jr","Mg==","U3RyYXdiZXJyaWVzIGFuZCBBcnRpY2hva2Vz","MTIvMDEvMjAxOA=="],"receiver":"ea6f1eef-bb81-4ba3-a0a5-0bf0bbc8bb98","function":"createAgreement"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["RG9sZQ==","VHJ1Y2tNeVNoaXBtZW50","U2hvcFJpdGU=","Q2FzdHJvdmlsbGUsIENhbGlmb3JuaWE=","QnJvbngsIE5ldyBZb3Jr","Mg==","U3RyYXdiZXJyaWVzIGFuZCBBcnRpY2hva2Vz","MTIvMDEvMjAxOA=="],"receiver":"1ea09945-6eeb-4db3-8e14-2af704aafe84","function":"createAgreement"}}}
 Found receiver object null
 Calling transaction 'createAgreement' on object edu.cmu.cs.obsidian.generated_code.ShippingDriver@553f17c...
 
-* 12/01/2018 - shipment [1] CONTRACTED, seller [Dole]. seller [Dole]. buyer [ShopRite], shipper [TruckMyShipment], src port [Castroville, California], dest port [Bronx, New York], shipment description [Strawberries and Artichokes]
+* 12/01/2018 - shipment [1] CONTRACTED, seller [Dole]. buyer [ShopRite], shipper [TruckMyShipment], src port [Castroville, California], dest port [Bronx, New York], shipment description [Strawberries and Artichokes]
+* shipping agreement created with id [1]
 
-created agreement with id: 
-1
 Raw return bytes:
-[50, 55, 54, 97, 49, 100, 99, 98, 45, 54, 99, 48, 97, 45, 52, 56, 54, 51, 45, 57, 50, 99, 102, 45, 57, 98, 101, 48, 52, 52, 57, 102, 101, 55, 102, 98]
+[50, 50, 51, 102, 54, 53, 101, 57, 45, 49, 49, 50, 97, 45, 52, 54, 49, 48, 45, 98, 55, 99, 50, 45, 53, 55, 51, 54, 98, 97, 102, 50, 48, 56, 97, 99]
 Sending back JSON: 
-{"result":{"message":"Mjc2YTFkY2ItNmMwYS00ODYzLTkyY2YtOWJlMDQ0OWZlN2Zi","status":"OK"}}
+{"result":{"message":"MjIzZjY1ZTktMTEyYS00NjEwLWI3YzItNTczNmJhZjIwOGFj","status":"OK"}}
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["VHJ1Y2s1MDAw","dHJ1Y2s=","MTIvMDMvMjAxOA=="],"receiver":"276a1dcb-6c0a-4863-92cf-9be0449fe7fb","function":"load"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["VHJ1Y2s1MDAw","dHJ1Y2s=","MTIvMDMvMjAxOA=="],"receiver":"223f65e9-112a-4610-b7c2-5736baf208ac","function":"load"}}}
 Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
 Calling transaction 'load' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
@@ -32,7 +29,7 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDUvMjAxOA==","Q2FzdHJvdmlsbGUsIENhbGlmb3JuaWE="],"receiver":"276a1dcb-6c0a-4863-92cf-9be0449fe7fb","function":"setSail"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDUvMjAxOA==","Q2FzdHJvdmlsbGUsIENhbGlmb3JuaWE="],"receiver":"223f65e9-112a-4610-b7c2-5736baf208ac","function":"setSail"}}}
 Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
 Calling transaction 'setSail' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
@@ -46,7 +43,7 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"276a1dcb-6c0a-4863-92cf-9be0449fe7fb","function":"setDock"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"223f65e9-112a-4610-b7c2-5736baf208ac","function":"setDock"}}}
 Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
 Calling transaction 'setDock' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
@@ -60,7 +57,7 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"276a1dcb-6c0a-4863-92cf-9be0449fe7fb","function":"setUndock"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"223f65e9-112a-4610-b7c2-5736baf208ac","function":"setUndock"}}}
 Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
 Calling transaction 'setUndock' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
@@ -74,7 +71,7 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDcvMjAxOA==","Q2hpY2FnbywgSWxsaW5vaXM="],"receiver":"276a1dcb-6c0a-4863-92cf-9be0449fe7fb","function":"setDock"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDcvMjAxOA==","Q2hpY2FnbywgSWxsaW5vaXM="],"receiver":"223f65e9-112a-4610-b7c2-5736baf208ac","function":"setDock"}}}
 Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
 Calling transaction 'setDock' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
@@ -88,7 +85,7 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDcvMjAxOA==","Q2hpY2FnbywgSWxsaW5vaXM="],"receiver":"276a1dcb-6c0a-4863-92cf-9be0449fe7fb","function":"setUndock"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDcvMjAxOA==","Q2hpY2FnbywgSWxsaW5vaXM="],"receiver":"223f65e9-112a-4610-b7c2-5736baf208ac","function":"setUndock"}}}
 Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
 Calling transaction 'setUndock' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
@@ -102,7 +99,7 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDkvMjAxOA==","QnJvbngsIE5ldyBZb3Jr"],"receiver":"276a1dcb-6c0a-4863-92cf-9be0449fe7fb","function":"setDeliver"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDkvMjAxOA==","QnJvbngsIE5ldyBZb3Jr"],"receiver":"223f65e9-112a-4610-b7c2-5736baf208ac","function":"setDeliver"}}}
 Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
 Calling transaction 'setDeliver' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 

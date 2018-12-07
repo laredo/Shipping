@@ -8,6 +8,7 @@ main contract ShippingDriver {
     int totalShipments;
     string nextID;
 
+
     ShippingDriver() {
         totalShipments = 0;
         nextID = "1";
@@ -22,12 +23,12 @@ main contract ShippingDriver {
         if (nextID == "1") {
             nextID = "2";
         } else {
-            nextID = "3";
+            nextID = "1";
         }
-
         string id = s.getID();
-        System.println("created agreement with id: ");
-        System.println(id);
+        System.print("* shipping agreement created with id [");
+        System.print(id);
+        System.println("]");
         return s;
     }
 }
@@ -82,8 +83,6 @@ contract Shipment {
         System.print(" - shipment [");
         System.print(id);
         System.print("] CONTRACTED, seller [");
-        System.print(seller);
-        System.print("]. seller [");
         System.print(seller);
         System.print("]. buyer [");
         System.print(buyer);
