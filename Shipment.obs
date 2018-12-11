@@ -54,12 +54,11 @@ contract Shipment {
     state Release {
         Transport@Load loadTsp;
     };
+
     state InTransit {
-        Transport@InTransport inTsp;
-    };
-    state Docked {
-        Transport@Docked dockTsp;
-    };
+        Transport@(InTransport | Docked) inTsp;
+    }
+
     state Delivered;
 
 
@@ -77,6 +76,7 @@ contract Shipment {
         plannedDate = pplannedDate;
         transportList = new TransportList();
         ->Contract;
+
 
         System.print("* ");
         System.print(pplannedDate);
@@ -129,10 +129,15 @@ contract Shipment {
     }
 
 
-    transaction setDock(Shipment@InTransit >> Docked this, string date, string port) {
-        inTsp.stopOver(date, port);
-        ->Docked(dockTsp = inTsp);
-
+    transaction arriveDock(Shipment@InTransit this, string date, string port) {
+        switch inTsp{
+            case InTransport {
+                inTsp.stopOver(date, port);
+            }
+            case Docked {
+                throw;
+            }
+        }
         System.print("* ");
         System.print(date);
         System.print(" - shipment [");
@@ -142,9 +147,16 @@ contract Shipment {
         System.println("]");
     }
 
-    transaction setUndock(Shipment@Docked >> InTransit this, string date, string port) {
-        dockTsp.layoverDepart(date, port);
-        ->InTransit(inTsp = dockTsp);
+
+    transaction departDock(Shipment@InTransit this, string date, string port) {
+        switch inTsp{
+          case InTransport {
+               throw;
+               }
+          case Docked {
+             inTsp.layoverDepart(date, port);
+          }
+        }
 
         System.print("* ");
         System.print(date);
@@ -155,9 +167,18 @@ contract Shipment {
         System.println("]");
     }
 
+
     transaction setDeliver(Shipment@InTransit >> Delivered this, string date, string port) {
-        inTsp.arrive(date, port);
-        transportList.append(inTsp);
+        switch inTsp {
+            case InTransport {
+                inTsp.arrive(date, port);
+                transportList.append(inTsp);
+            }
+            case Docked {
+                throw;
+            }
+        }
+
         ->Delivered;
 
         System.print("* ");
@@ -168,7 +189,6 @@ contract Shipment {
         System.print(port);
         System.println("]");
     }
-
 
     transaction getID(Shipment this) returns string {
         return id;

@@ -10,16 +10,15 @@ main contract ShippingDriverClient {
 
         s.setSail("12/05/2018", "Castroville, California");
 
-        s.setDock("12/06/2018", "Salt Lake City, Utah");
+        s.arriveDock("12/06/2018", "Salt Lake City, Utah");
 
-        s.setUndock("12/06/2018", "Salt Lake City, Utah");
+        s.departDock("12/06/2018", "Salt Lake City, Utah");
 
-        s.setDock("12/07/2018", "Chicago, Illinois");
+        s.arriveDock("12/07/2018", "Chicago, Illinois");
 
-        s.setUndock("12/07/2018", "Chicago, Illinois");
+        s.departDock("12/07/2018", "Chicago, Illinois");
 
         s.setDeliver("12/09/2018", "Bronx, New York");
-
    }
 }
 
