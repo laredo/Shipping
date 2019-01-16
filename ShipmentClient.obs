@@ -4,11 +4,11 @@ main contract ShippingDriverClient {
 
    transaction main(remote ShippingDriver@Shared sh) {
 
-        remote Shipment s = sh.createAgreement("Dole", "TruckMyShipment", "ShopRite", "Castroville, California", "Bronx, New York", 50, "Strawberries and Artichokes", "12/01/2018");
+        remote Shipment s = sh.createAgreement("Dole", "TruckMyShipment", "ShopRite", "Sunnyvale, California", "Bronx, New York", 50, "Strawberries", "12/01/2018");
 
         s.load("Truck5000", "truck", "12/03/2018");
 
-        s.setSail("12/05/2018", "Castroville, California");
+        s.depart("12/05/2018", "Sunnyvale, California");
 
         s.arriveDock("12/06/2018", "Salt Lake City, Utah");
 
@@ -18,7 +18,7 @@ main contract ShippingDriverClient {
 
         s.departDock("12/07/2018", "Chicago, Illinois");
 
-        s.setDeliver("12/09/2018", "Bronx, New York");
+        s.deliver("12/09/2018", "Bronx, New York");
    }
 }
 
