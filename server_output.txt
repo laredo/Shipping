@@ -1,69 +1,30 @@
 Listening on port 12345...
 Accepted connection...
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["RG9sZQ==","VHJ1Y2tNeVNoaXBtZW50","U2hvcFJpdGU=","U3Vubnl2YWxlLCBDYWxpZm9ybmlh","QnJvbngsIE5ldyBZb3Jr","Mg==","U3RyYXdiZXJyaWVz","MTIvMDEvMjAxOA=="],"receiver":"79bd867a-4614-48b1-af73-344e9ab2de1a","function":"createAgreement"}}}
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["RG9sZQ==","VHJ1Y2tNeVNoaXBtZW50","U2hvcFJpdGU=","U3Vubnl2YWxlLCBDYWxpZm9ybmlh","QnJvbngsIE5ldyBZb3Jr","Mg==","U3RyYXdiZXJyaWVz","MTIvMDEvMjAxOA=="],"receiver":"d564241f-f364-45ef-be5c-76ea7d658910","function":"createAgreement"}}}
 Found receiver object null
-Calling transaction 'createAgreement' on object edu.cmu.cs.obsidian.generated_code.ShippingDriver@13c27452...
+Calling transaction 'createAgreement' on object edu.cmu.cs.obsidian.generated_code.ShippingDriver@553f17c...
 
-* 12/01/2018 - shipment [2] CONTRACTED, seller [Dole]. buyer [ShopRite], shipper [TruckMyShipment], src port [Sunnyvale, California], dest port [Bronx, New York], shipment description [Strawberries]
+* 12/01/2018 - shipment 1 [Contract]
+               seller: Dole
+               buyer: ShopRite
+               shipper: TruckMyShipment
+               source port: Sunnyvale, California
+               destination port: Bronx, New York
+               shipment description: Strawberries
 
 Raw return bytes:
-[49, 101, 48, 54, 55, 55, 102, 101, 45, 49, 102, 52, 53, 45, 52, 52, 51, 48, 45, 98, 97, 99, 51, 45, 97, 54, 48, 50, 102, 52, 54, 97, 97, 53, 52, 49]
+[99, 57, 100, 54, 99, 54, 50, 53, 45, 50, 50, 55, 52, 45, 52, 54, 100, 101, 45, 98, 53, 100, 97, 45, 98, 97, 101, 49, 50, 100, 101, 54, 50, 55, 102, 55]
 Sending back JSON: 
-{"result":{"message":"MWUwNjc3ZmUtMWY0NS00NDMwLWJhYzMtYTYwMmY0NmFhNTQx","status":"OK"}}
+{"result":{"message":"YzlkNmM2MjUtMjI3NC00NmRlLWI1ZGEtYmFlMTJkZTYyN2Y3","status":"OK"}}
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["VHJ1Y2s1MDAw","dHJ1Y2s=","MTIvMDMvMjAxOA=="],"receiver":"1e0677fe-1f45-4430-bac3-a602f46aa541","function":"load"}}}
-Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191
-Calling transaction 'load' on object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191...
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDIvMjAxOA=="],"receiver":"c9d6c625-2274-46de-b5da-bae12de627f7","function":"release"}}}
+Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
+Calling transaction 'release' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
-* 12/03/2018 - shipment [2] RELEASED on [Truck5000], transport type [Truck5000]
-
-Raw return bytes:
-[]
-Sending back JSON: 
-{"result":{"message":"","status":"OK"}}
-Successfully sent return value
-Transaction completed                                                                                                                      
-Received transaction request. JSON:                                                                                                        
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDUvMjAxOA==","U3Vubnl2YWxlLCBDYWxpZm9ybmlh"],"receiver":"1e0677fe-1f45-4430-bac3-a602f46aa541","function":"depart"}}}                                                                                           
-Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191                                                                  
-Calling transaction 'depart' on object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191...                                              
-                                                                                                                                           
-* 12/05/2018 - leg INTRANSPORT. port [Sunnyvale, California]                                                                               
-* 12/05/2018 - transport INTRANSPORT. port [Sunnyvale, California]                                                                         
-* 12/05/2018 - shipment [2] INTRANSIT from port [Sunnyvale, California]                                                                    
-                                                                                                                                           
-Raw return bytes:                                                                                                                          
-[]                                                                                                                                         
-Sending back JSON:                                                                                                                         
-{"result":{"message":"","status":"OK"}}                                                                                                    
-Successfully sent return value                                                                                                             
-Transaction completed                                                                                                                      
-Received transaction request. JSON:                                                                                                        
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"1e0677fe-1f45-4430-bac3-a602f46aa541","function":"arriveDock"}}}                                                                                       
-Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191                                                                  
-Calling transaction 'arriveDock' on object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191...                                          
-                                                                                                                                           
-* 12/06/2018 - leg ARRIVED. port [Salt Lake City, Utah]                                                                                    
-* 12/06/2018 - transport DOCKED. port [Salt Lake City, Utah]                                                                               
-* 12/06/2018 - shipment [2] DOCKED at port [Salt Lake City, Utah]                                                                          
-                                                                                                                                           
-Raw return bytes:                                                                                                                          
-[]                                                                                                                                         
-Sending back JSON:                                                                                                                         
-{"result":{"message":"","status":"OK"}}                                                                                                    
-Successfully sent return value                                                                                                             
-Transaction completed                                                                                                                      
-Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"1e0677fe-1f45-4430-bac3-a602f46aa541","function":"departDock"}}}
-Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191
-Calling transaction 'departDock' on object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191...
-
-* 12/06/2018 - leg INTRANSPORT. port [Salt Lake City, Utah]
-* 12/06/2018 - transport INTRANSPORT after layover. port [Salt Lake City, Utah]
-* 12/06/2018 - shipment [2] INTRANSIT after a layover at port [Salt Lake City, Utah]
+* 12/02/2018 - shipment 1 [Release]
 
 Raw return bytes:
 []
@@ -72,13 +33,11 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDcvMjAxOA==","Q2hpY2FnbywgSWxsaW5vaXM="],"receiver":"1e0677fe-1f45-4430-bac3-a602f46aa541","function":"arriveDock"}}}
-Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191
-Calling transaction 'arriveDock' on object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191...
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDIvMjAxOA=="],"receiver":"c9d6c625-2274-46de-b5da-bae12de627f7","function":"setSail"}}}
+Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
+Calling transaction 'setSail' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
-* 12/07/2018 - leg ARRIVED. port [Chicago, Illinois]
-* 12/07/2018 - transport DOCKED. port [Chicago, Illinois]
-* 12/07/2018 - shipment [2] DOCKED at port [Chicago, Illinois]
+* 12/02/2018 - shipment 1 [InTransit]
 
 Raw return bytes:
 []
@@ -87,13 +46,26 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDcvMjAxOA==","Q2hpY2FnbywgSWxsaW5vaXM="],"receiver":"1e0677fe-1f45-4430-bac3-a602f46aa541","function":"departDock"}}}
-Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191
-Calling transaction 'departDock' on object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191...
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["VHJ1Y2s1MDAw","dHJ1Y2s=","MTIvMDMvMjAxOA==","U3Vubnl2YWxlLCBDYWxpZm9ybmlh"],"receiver":"c9d6c625-2274-46de-b5da-bae12de627f7","function":"depart"}}}
+Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
+Calling transaction 'depart' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
-* 12/07/2018 - leg INTRANSPORT. port [Chicago, Illinois]
-* 12/07/2018 - transport INTRANSPORT after layover. port [Chicago, Illinois]
-* 12/07/2018 - shipment [2] INTRANSIT after a layover at port [Chicago, Illinois]
+* 12/03/2018 - transport [Load] on [Truck5000], type [truck] at port [Sunnyvale, California]
+
+* 12/03/2018 - leg [InTransit]. port [Sunnyvale, California]
+* 12/03/2018 - transport [InTransport]. port [Sunnyvale, California]
+Raw return bytes:
+[]
+Sending back JSON: 
+{"result":{"message":"","status":"OK"}}
+Successfully sent return value
+Transaction completed
+Received transaction request. JSON:
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"c9d6c625-2274-46de-b5da-bae12de627f7","function":"layover"}}}
+Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
+Calling transaction 'layover' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
+
+* 12/06/2018 - leg [Arrived]. port [Salt Lake City, Utah]
 
 Raw return bytes:
 []
@@ -102,14 +74,46 @@ Sending back JSON:
 Successfully sent return value
 Transaction completed
 Received transaction request. JSON:
-{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDkvMjAxOA==","QnJvbngsIE5ldyBZb3Jr"],"receiver":"1e0677fe-1f45-4430-bac3-a602f46aa541","function":"deliver"}}}
-Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191
-Calling transaction 'deliver' on object edu.cmu.cs.obsidian.generated_code.Shipment@eafc191...
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDYvMjAxOA==","U2FsdCBMYWtlIENpdHksIFV0YWg="],"receiver":"c9d6c625-2274-46de-b5da-bae12de627f7","function":"layoverDepart"}}}
+Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
+Calling transaction 'layoverDepart' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
 
-* 12/09/2018 - leg ARRIVED. port [Bronx, New York]
-* 12/09/2018 - transport DOCKED. port [Bronx, New York]
-* 12/09/2018 - transport UNLOADED. port [Bronx, New York]
-* 12/09/2018 - shipment [2] DELIVERED at port [Bronx, New York]
+* 12/06/2018 - leg [InTransit]. port [Salt Lake City, Utah]
+
+Raw return bytes:
+[]
+Sending back JSON: 
+{"result":{"message":"","status":"OK"}}
+Successfully sent return value
+Transaction completed
+Received transaction request. JSON:
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["RmVkZXg=","Q2FyZ28=","MTIvMDcvMjAxOA==","Q2hpY2FnbywgSWxsaW5vaXM="],"receiver":"c9d6c625-2274-46de-b5da-bae12de627f7","function":"transfer"}}}
+Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
+Calling transaction 'transfer' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
+
+* 12/07/2018 - leg [Arrived]. port [Chicago, Illinois]
+* 12/07/2018 - transport [Unload]. port [Chicago, Illinois]
+
+* 12/07/2018 - transport [Load] on [Fedex], type [Cargo] at port [Sunnyvale, California]
+
+* 12/07/2018 - leg [InTransit]. port [Chicago, Illinois]
+* 12/07/2018 - transport [InTransport]. port [Chicago, Illinois]
+* 12/07/2018 - transfer at port [Chicago, Illinois]
+
+Raw return bytes:
+[]
+Sending back JSON: 
+{"result":{"message":"","status":"OK"}}
+Successfully sent return value
+Transaction completed
+Received transaction request. JSON:
+{"method":"invoke","jsonrpc":"2.0","params":{"ctorMsg":{"args":["MTIvMDkvMjAxOA==","QnJvbngsIE5ldyBZb3Jr"],"receiver":"c9d6c625-2274-46de-b5da-bae12de627f7","function":"deliver"}}}
+Found receiver object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e
+Calling transaction 'deliver' on object edu.cmu.cs.obsidian.generated_code.Shipment@31a5c39e...
+
+* 12/09/2018 - leg [Arrived]. port [Bronx, New York]
+* 12/09/2018 - transport [Unload]. port [Bronx, New York]
+* 12/09/2018 - shipment 1 [Delivered] at port [Bronx, New York]
 
 Raw return bytes:
 []

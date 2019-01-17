@@ -5,19 +5,16 @@ main contract ShippingDriverClient {
    transaction main(remote ShippingDriver@Shared sh) {
 
         remote Shipment s = sh.createAgreement("Dole", "TruckMyShipment", "ShopRite", "Sunnyvale, California", "Bronx, New York", 50, "Strawberries", "12/01/2018");
+        s.release("12/02/2018");
+        s.setSail("12/02/2018");
 
-        s.load("Truck5000", "truck", "12/03/2018");
+        // transport 1
+        s.depart("Truck5000", "truck", "12/03/2018", "Sunnyvale, California");
+        s.layover("12/06/2018", "Salt Lake City, Utah");
+        s.layoverDepart("12/06/2018", "Salt Lake City, Utah");
 
-        s.depart("12/05/2018", "Sunnyvale, California");
-
-        s.arriveDock("12/06/2018", "Salt Lake City, Utah");
-
-        s.departDock("12/06/2018", "Salt Lake City, Utah");
-
-        s.arriveDock("12/07/2018", "Chicago, Illinois");
-
-        s.departDock("12/07/2018", "Chicago, Illinois");
-
+        // transport 2
+        s.transfer("Fedex", "Cargo", "12/07/2018", "Chicago, Illinois");
         s.deliver("12/09/2018", "Bronx, New York");
    }
 }

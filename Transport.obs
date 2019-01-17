@@ -6,7 +6,6 @@ contract Transport {
     state InTransport {
         Leg@InTransit currentLeg;
     }
-    state Docked;
     state Unload;
 
 
@@ -16,13 +15,23 @@ contract Transport {
     string destinationPort;
     LegList@Owned legList;
 
-
-    Transport@Load(string pTransportName, string pTransportType, string pOriginPort) {
+    Transport@Load(string pTransportName, string pTransportType, string pOriginPort, string date) {
         transportName = pTransportName;
         transportType = pTransportType;
         originPort = pOriginPort;
         legList = new LegList();
         ->Load;
+
+        System.println("");
+        System.print("* ");
+        System.print(date);
+        System.print(" - transport [Load] on [");
+        System.print(pTransportName);
+        System.print("], type [");
+        System.print(pTransportType);
+        System.print("] at port [");
+        System.print(pOriginPort);
+        System.println("]");
     }
 
 
@@ -52,83 +61,65 @@ contract Transport {
         System.println("");
         System.print("* ");
         System.print(pdepartureDate);
-        System.print(" - leg INTRANSPORT. port [");
+        System.print(" - leg [InTransit]. port [");
         System.print(port);
         System.println("]");
         System.print("* ");
         System.print(pdepartureDate);
-        System.print(" - transport INTRANSPORT. port [");
+        System.print(" - transport [InTransport]. port [");
         System.print(port);
         System.println("]");
+
     }
 
-    transaction stopOver(Transport@InTransport >> Docked this, string parrivalDate, string port) {
+    transaction stopOver(Transport@InTransport this, string parrivalDate, string port) {
         currentLeg.setArrival(parrivalDate, port);
         [currentLeg @ Arrived];
         legList.append(currentLeg);
         [currentLeg @ Unowned];
-        ->Docked;
+        currentLeg = new Leg(this, "", "");
 
         System.println("");
         System.print("* ");
         System.print(parrivalDate);
-        System.print(" - leg ARRIVED. port [");
+        System.print(" - leg [Arrived]. port [");
         System.print(port);
         System.println("]");
-        System.print("* ");
-        System.print(parrivalDate);
-        System.print(" - transport DOCKED. port [");
-        System.print(port);
-        System.println("]");
+        System.println("");
     }
 
 
-    transaction layoverDepart(Transport@ Docked >> InTransport this, string date, string port) {
+    transaction layoverDepart(Transport@ InTransport this, string date, string port) {
         Leg newLeg = new Leg(this, date, port);
         ->InTransport(currentLeg = newLeg);
 
         System.println("");
         System.print("* ");
         System.print(date);
-        System.print(" - leg INTRANSPORT. port [");
+        System.print(" - leg [InTransit]. port [");
         System.print(port);
         System.println("]");
-        System.print("* ");
-        System.print(date);
-        System.print(" - transport INTRANSPORT after layover. port [");
-        System.print(port);
-        System.println("]");
+        System.println("");
     }
 
 
     transaction arrive(Transport@InTransport >> Unload this, string date, string port) {
-        //stopOver(date, port);
-        // [currentLeg @ Docked];
-
         currentLeg.setArrival(date, port);
         [currentLeg @ Arrived];
         legList.append(currentLeg);
         [currentLeg @ Unowned];
-        ->Docked;
+        ->Unload(destinationPort = port);
 
         System.println("");
         System.print("* ");
         System.print(date);
-        System.print(" - leg ARRIVED. port [");
-        System.print(port);
-        System.println("]");
-        System.print("* ");
-        System.print(date);
-        System.print(" - transport DOCKED. port [");
+        System.print(" - leg [Arrived]. port [");
         System.print(port);
         System.println("]");
 
-
-        ->Unload(destinationPort = port);
-
         System.print("* ");
         System.print(date);
-        System.print(" - transport UNLOADED. port [");
+        System.print(" - transport [Unload]. port [");
         System.print(port);
         System.println("]");
     }
