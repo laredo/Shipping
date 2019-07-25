@@ -1,5 +1,5 @@
-import "Obsidian Runtime/src/Runtime/edu/cmu/cs/obsidian/java-utilities/System.obs"
-import "Shipping/Transport.obs"
+import "IO.obs"
+import "Transport.obs"
 
 
 
@@ -8,7 +8,7 @@ main contract ShippingDriver {
     int totalShipments;
     string nextID;
 
-    ShippingDriver() {
+    ShippingDriver@Owned() {
         totalShipments = 0;
         nextID = "1";
     }
@@ -28,8 +28,6 @@ main contract ShippingDriver {
 }
 
 
-
-
 contract Shipment {
     string id;
     string seller;
@@ -40,14 +38,17 @@ contract Shipment {
     int load;
     string description;
     string plannedDate;
-    string releasedDate;
 
     TransportList@Owned transportList;
-    Transport@InTransport inTsp;
 
     state Contract;
-    state Release;
-    state InTransit;
+    state Release {
+        string releasedDate;
+    }
+    state Sailing;
+    state InTransit {
+        Transport@InTransport inTsp;
+    }
     state Delivered;
 
     Shipment@Contract(string nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
@@ -65,61 +66,63 @@ contract Shipment {
         transportList = new TransportList();
         ->Contract;
 
-        System.println("");
-        System.print("* ");
-        System.print(pplannedDate);
-        System.print(" - shipment ");
-        System.print(id);
-        System.println(" [Contract]");
-        System.print("               seller: ");
-        System.println(seller);
-        System.print("               buyer: ");
-        System.println(buyer);
-        System.print("               shipper: ");
-        System.println(shipper);
-        System.print("               source port: ");
-        System.println(source);
-        System.print("               destination port: ");
-        System.println(dest);
-        System.print("               shipment description: ");
-        System.println(description);
-        System.println("");
+        IO io = new IO();
+        io.println("");
+        io.print("* ");
+        io.print(pplannedDate);
+        io.print(" - shipment ");
+        io.print(id);
+        io.println(" [Contract]");
+        io.print("               seller: ");
+        io.println(seller);
+        io.print("               buyer: ");
+        io.println(buyer);
+        io.print("               shipper: ");
+        io.println(shipper);
+        io.print("               source port: ");
+        io.println(source);
+        io.print("               destination port: ");
+        io.println(dest);
+        io.print("               shipment description: ");
+        io.println(description);
+        io.println("");
     }
 
 
     transaction release(Shipment@Contract >> Release this, string date) {
-        releasedDate = date;
-        ->Release;
+        ->Release(releasedDate = date);
 
-        System.println("");
-        System.print("* ");
-        System.print(date);
-        System.print(" - shipment ");
-        System.print(id);
-        System.println(" [Release]");
-        System.println("");
+        IO io = new IO();
+        io.println("");
+        io.print("* ");
+        io.print(date);
+        io.print(" - shipment ");
+        io.print(id);
+        io.println(" [Release]");
+        io.println("");
     }
 
 
-    transaction setSail(Shipment@Release >> InTransit this, string date) {
-        ->InTransit;
+    transaction setSail(Shipment@Release >> Sailing this, string date) {
+        ->Sailing;
 
-        System.println("");
-        System.print("* ");
-        System.print(date);
-        System.print(" - shipment ");
-        System.print(id);
-        System.println(" [InTransit]");
-        System.println("");
+        IO io = new IO();
+        io.println("");
+        io.print("* ");
+        io.print(date);
+        io.print(" - shipment ");
+        io.print(id);
+        io.println(" [InTransit]");
+        io.println("");
     }
 
 
-    transaction depart(Shipment@InTransit this, string transportName, string transportType, string date, string port) {
+    transaction depart(Shipment@Sailing >> InTransit this, string transportName, string transportType, string date, string port) {
         Transport newTransport = new Transport(transportName, transportType, source, date);
         [newTransport @ Load];
         newTransport.depart(date, port);
         [newTransport @ InTransport];
-        inTsp = newTransport;
+        ->InTransit(inTsp = newTransport);
     }
 
 
@@ -143,34 +146,29 @@ contract Shipment {
         [newTransport @ InTransport];
         inTsp = newTransport;
 
-        System.print("* ");
-        System.print(date);
-        System.print(" - transfer at port [");
-        System.print(port);
-        System.println("]");
-        System.println("");
+        IO io = new IO();
+        io.print("* ");
+        io.print(date);
+        io.print(" - transfer at port [");
+        io.print(port);
+        io.println("]");
+        io.println("");
     }
-
-
-
-
-
-
-
 
     transaction deliver(Shipment@InTransit >> Delivered this, string date, string port) {
         inTsp.arrive(date, port);
         transportList.append(inTsp);
         ->Delivered;
 
-        System.print("* ");
-        System.print(date);
-        System.print(" - shipment ");
-        System.print(id);
-        System.print(" [Delivered] at port [");
-        System.print(port);
-        System.println("]");
-        System.println("");
+        IO io = new IO();
+        io.print("* ");
+        io.print(date);
+        io.print(" - shipment ");
+        io.print(id);
+        io.print(" [Delivered] at port [");
+        io.print(port);
+        io.println("]");
+        io.println("");
     }
 
     transaction getID(Shipment this) returns string {
