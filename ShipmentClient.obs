@@ -1,4 +1,4 @@
-import "Shipping/Shipment.obs"
+import "Shipment.obs"
 
 main contract ShippingDriverClient {
 

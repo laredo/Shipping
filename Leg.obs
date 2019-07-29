@@ -1,12 +1,13 @@
 contract Leg {
 
     state InTransit;
-    state Arrived;
+    state Arrived {
+        string arrivalDate;
+        string destinationPort;
+    }
 
     string departureDate;
-    string arrivalDate;
     string originPort;
-    string destinationPort;
     Transport@Unowned carrier;
 
     Leg@InTransit(Transport@Unowned t, string ddepartureDate, string doriginPort) {
@@ -36,19 +37,14 @@ contract Leg {
 contract LegList {
 
     state Empty;
-    asset state HasNext {
+    state HasNext {
+        Leg@Arrived value;
         LegList@Owned next;
     }
-    asset state NoNext;
-
-
-    Leg@Arrived value;
-
 
     LegList@Empty() {
         ->Empty;
     }
-
 
     transaction append(LegList@Owned this, Leg@Arrived >> Unowned pLeg) {
         switch this {
@@ -75,18 +71,18 @@ contract LegList {
 
 
     transaction nth(LegList@Owned this, int n) returns Leg@Unowned {
-        if (n == 0) {
-            return value;
-        } else {
-            switch this {
-                case HasNext {
-                    return next.nth(n - 1);
+        switch this {
+            case HasNext {
+                if (n == 0) {
+                    return value;
                 }
-                case Empty {
-                    return value; // ideally, this should throw an exception
-                }
+                return next.nth(n - 1);
+            }
+            case Empty {
+                revert "Can't access the nth element of an empty list.";
             }
         }
+        
     }
 
 }
