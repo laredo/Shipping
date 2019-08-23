@@ -1,35 +1,30 @@
 import "IO.obs"
 import "Transport.obs"
-
+import "LinkedList.obs"
 
 
 main contract ShippingDriver {
 
     int totalShipments;
-    string nextID;
+    int nextID;
 
     ShippingDriver@Owned() {
         totalShipments = 0;
-        nextID = "1";
+        nextID = 1;
     }
 
     transaction createAgreement(string pseller, string pshipper, string pbuyer, string psource,
                                string pdest, int pload, string pdescription, string pplannedDate) returns Shipment@Contract {
         Shipment s = new Shipment(nextID, pseller, pshipper, pbuyer, psource, pdest, pload, pdescription, pplannedDate);
         totalShipments = totalShipments + 1;
-        if (nextID == "1") {
-            nextID = "2";
-        } else {
-            nextID = "1";
-        }
-        string id = s.getID();
+        nextID = nextID + 1;
         return s;
     }
 }
 
 
 contract Shipment {
-    string id;
+    int id;
     string seller;
     string shipper;
     string buyer;
@@ -39,7 +34,7 @@ contract Shipment {
     string description;
     string plannedDate;
 
-    TransportList@Owned transportList;
+    LinkedList@Owned transportList;
 
     state Contract;
     state Release {
@@ -51,7 +46,7 @@ contract Shipment {
     }
     state Delivered;
 
-    Shipment@Contract(string nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
+    Shipment@Contract(int nid, string pseller, string pshipper, string pbuyer, string psource, string pdest,
     		 int pload, string pdescription, string pplannedDate) {
         id = nid;
         seller = pseller;
@@ -63,7 +58,7 @@ contract Shipment {
         load = pload;
         description = pdescription;
         plannedDate = pplannedDate;
-        transportList = new TransportList();
+        transportList = new LinkedList[Transport]();
         ->Contract;
 
         IO io = new IO();
@@ -71,7 +66,7 @@ contract Shipment {
         io.print("* ");
         io.print(pplannedDate);
         io.print(" - shipment ");
-        io.print(id);
+        io.printInt(id);
         io.println(" [Contract]");
         io.print("               seller: ");
         io.println(seller);
@@ -97,7 +92,7 @@ contract Shipment {
         io.print("* ");
         io.print(date);
         io.print(" - shipment ");
-        io.print(id);
+        io.printInt(id);
         io.println(" [Release]");
         io.println("");
     }
@@ -111,7 +106,7 @@ contract Shipment {
         io.print("* ");
         io.print(date);
         io.print(" - shipment ");
-        io.print(id);
+        io.printInt(id);
         io.println(" [InTransit]");
         io.println("");
     }
@@ -138,7 +133,7 @@ contract Shipment {
 
     transaction transfer(Shipment@InTransit this, string transportName, string transportType, string date, string port) {
         inTsp.arrive(date, port);
-        transportList.append(inTsp);
+        transportList.append[Transport](inTsp);
 
         Transport newTransport = new Transport(transportName, transportType, source, date);
         [newTransport @ Load];
@@ -157,21 +152,21 @@ contract Shipment {
 
     transaction deliver(Shipment@InTransit >> Delivered this, string date, string port) {
         inTsp.arrive(date, port);
-        transportList.append(inTsp);
+        transportList.append[Transport](inTsp);
         ->Delivered;
 
         IO io = new IO();
         io.print("* ");
         io.print(date);
         io.print(" - shipment ");
-        io.print(id);
+        io.printInt(id);
         io.print(" [Delivered] at port [");
         io.print(port);
         io.println("]");
         io.println("");
     }
 
-    transaction getID(Shipment this) returns string {
+    transaction getID(Shipment this) returns int {
         return id;
     }
 
