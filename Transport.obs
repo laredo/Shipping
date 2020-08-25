@@ -15,14 +15,14 @@ contract Transport {
     string transportName;
     string transportType;
     string originPort;
-    LinkedList[Leg]@Owned legList;
+    LinkedList[Leg@Owned]@Owned legList;
  
 
     Transport@Load(string pTransportName, string pTransportType, string pOriginPort, string date) {
         transportName = pTransportName;
         transportType = pTransportType;
         originPort = pOriginPort;
-        legList = new LinkedList[Leg]();
+        legList = new LinkedList[Leg@Owned]();
         ->Load;
 
         IO io = new IO();

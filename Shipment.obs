@@ -58,7 +58,7 @@ contract Shipment {
         load = pload;
         description = pdescription;
         plannedDate = pplannedDate;
-        transportList = new LinkedList[Transport]();
+        transportList = new LinkedList[Transport@Owned]();
         ->Contract;
 
         IO io = new IO();
